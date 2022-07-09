@@ -18,7 +18,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
+    "start": "serve -s build -l 4000",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -49,5 +50,8 @@
   "engines": {
     "node": "^16.15.0",
     "npm": "^8.5.5"
+  },
+  "devDependencies": {
+    "serve": "^13.0.4"
   }
 }
