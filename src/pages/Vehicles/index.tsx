@@ -1,30 +1,41 @@
-import { useEffect, useState } from "react";
-import { getVehicles } from "../../lib/api";
-import { Button, Card, Search } from "../../components";
-import styles from "./Vehicles.module.scss";
-import { IVehicle } from "../../types/Vehicle";
+import { useEffect, useState } from 'react'
+import { getVehicles } from '../../lib/api'
+import { Button, Card, Search } from '../../components'
+import styles from './Vehicles.module.scss'
+import { IVehicle } from '../../types/Vehicle'
 
 const VehiclesPage = () => {
-  const [vehicles, setVehicles] = useState<IVehicle[]>([]);
-  const [search, setSearch] = useState<string>("");
+  const [vehicles, setVehicles] = useState<IVehicle[]>([])
+  const [search, setSearch] = useState<string>('')
 
   useEffect(() => {
     const fetchVehicles = async () => {
-      const payload = await getVehicles();
-      setVehicles(payload);
-    };
+      const payload = await getVehicles()
+      setVehicles(payload)
+    }
 
-    fetchVehicles();
-  }, []);
+    fetchVehicles()
+  }, [])
 
-  console.log({ vehicles });
+  console.debug({ vehicles })
 
   return (
     <div className={styles.Vehicles}>
       <main className={styles.main}>
-        <Search placeholder="Search" value={search} onChange={() => {}} />
+        <Search
+          placeholder="Search"
+          value={search}
+          onChange={() => {
+            console.debug('Search changed')
+          }}
+        />
 
-        <Button text="Add new vehicle" onClick={() => {}} />
+        <Button
+          text="Add new vehicle"
+          onClick={() => {
+            console.debug('Add vehicle clicked')
+          }}
+        />
 
         <Card title="Sandero Stepway">
           <p>Price: 22000</p>
@@ -33,7 +44,7 @@ const VehiclesPage = () => {
         </Card>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default VehiclesPage;
+export default VehiclesPage

@@ -1,10 +1,16 @@
 interface IButton {
-  onClick: () => void;
-  text: string;
+  onClick: () => void
+  text: string
 }
 
 const Button = (props: IButton) => {
-  return <button onClick={props.onClick}>{props.text}</button>;
-};
+  const { text, onClick } = props
 
-export default Button;
+  return (
+    <button type="button" onClick={onClick}>
+      {text}
+    </button>
+  )
+}
+
+export default Button
