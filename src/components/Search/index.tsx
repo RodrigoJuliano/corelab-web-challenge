@@ -1,13 +1,20 @@
 interface ISearch {
-  placeholder: string;
-  value: string;
-  onChange: () => void;
+  placeholder: string
+  value: string
+  onChange: () => void
 }
 
 const Search = (props: ISearch) => {
-  return (
-    <input type="text" placeholder={props.placeholder} value={props.value} />
-  );
-};
+  const { placeholder, value, onChange } = props
 
-export default Search;
+  return (
+    <input
+      type="text"
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+    />
+  )
+}
+
+export default Search
