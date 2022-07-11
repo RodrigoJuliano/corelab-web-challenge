@@ -2,10 +2,17 @@ export interface IVehicle {
   id: number
   name: string
   description: string
+  brand: string
   plate: string
-  isFavorite: boolean
+  is_favorite: boolean
   year: number
   color: string
   price: number
-  createdAt: Date
+  created_at: Date
+  modified_at: Date
 }
+
+export type IVehiclePayload = Omit<
+  IVehicle,
+  'id' | 'is_favorite' | 'created_at' | 'modified_at'
+>
