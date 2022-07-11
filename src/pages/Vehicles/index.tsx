@@ -5,10 +5,12 @@ import {
   VehiclesContext,
   IVehiclesContext,
 } from '../../contexts/VehiclesContext'
+import translateColor from '../../utils/translateColor'
+import Conditional from '../../components/Conditional'
 
 const VehiclesPage = () => {
   const [search, setSearch] = useState<string>('')
-  const { vehicles, loadVehicles, loading } = useContext(
+  const { vehicles, loadVehicles, loading, error } = useContext(
     VehiclesContext
   ) as IVehiclesContext
 
@@ -34,18 +36,65 @@ const VehiclesPage = () => {
           }}
         />
 
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          vehicles.map((vehicle) => (
-            <Card key={vehicle.id} title={vehicle.name}>
-              <p>Price: {vehicle.price}</p>
-              <p>Description: {vehicle.description}</p>
-              <p>Year: {vehicle.year}</p>
-              <p>Color: {vehicle.color}</p>
-            </Card>
-          ))
-        )}
+        <span>Anúncios</span>
+
+        <div className={styles.cardsContainer}>
+          <Conditional condition={!loading} fallback={<div>Loading...</div>}>
+            <Conditional
+              condition={error === null}
+              fallback={<div>{error}</div>}
+            >
+              {vehicles.map((vehicle) => (
+                <Card
+                  key={vehicle.id}
+                  title={vehicle.name}
+                  color={vehicle.color}
+                >
+                  <p>Price: {vehicle.price}</p>
+                  <p>Description: {vehicle.description}</p>
+                  <p>Year: {vehicle.year}</p>
+                  <p>Color: {translateColor(vehicle.color)}</p>
+                </Card>
+              ))}
+              {vehicles.map((vehicle) => (
+                <Card
+                  key={vehicle.id}
+                  title={vehicle.name}
+                  color={vehicle.color}
+                >
+                  <p>Price: {vehicle.price}</p>
+                  <p>Description: {vehicle.description}</p>
+                  <p>Year: {vehicle.year}</p>
+                  <p>Color: {translateColor(vehicle.color)}</p>
+                </Card>
+              ))}
+              {vehicles.map((vehicle) => (
+                <Card
+                  key={vehicle.id}
+                  title={vehicle.name}
+                  color={vehicle.color}
+                >
+                  <p>Price: {vehicle.price}</p>
+                  <p>Description: {vehicle.description}</p>
+                  <p>Year: {vehicle.year}</p>
+                  <p>Color: {translateColor(vehicle.color)}</p>
+                </Card>
+              ))}
+              {vehicles.map((vehicle) => (
+                <Card
+                  key={vehicle.id}
+                  title={vehicle.name}
+                  color={vehicle.color}
+                >
+                  <p>Price: {vehicle.price}</p>
+                  <p>Description: {vehicle.description}</p>
+                  <p>Year: {vehicle.year}</p>
+                  <p>Color: {translateColor(vehicle.color)}</p>
+                </Card>
+              ))}
+            </Conditional>
+          </Conditional>
+        </div>
       </main>
     </div>
   )

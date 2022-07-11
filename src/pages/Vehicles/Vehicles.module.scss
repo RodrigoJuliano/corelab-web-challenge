@@ -7,22 +7,33 @@
   .main {
     display: grid;
     gap: 1rem;
-    width: 100%;
+    width: fit-content;
+    margin: auto;
+  }
+
+  .cardsContainer {
+    display: grid;
+    gap: 1rem;
   }
 
   @include tablet {
-
   }
 
   @include laptop {
-
+    .cardsContainer {
+      grid-template-columns: repeat(2, 300px);
+    }
   }
 
   @include desktop {
-
+    .cardsContainer {
+      grid-template-columns: repeat(3, 300px);
+    }
   }
 
   @include desktop-large {
-
+    .cardsContainer {
+      grid-template-columns: repeat(4, 300px);
+    }
   }
 }
