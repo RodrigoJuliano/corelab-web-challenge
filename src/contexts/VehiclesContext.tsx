@@ -25,14 +25,20 @@ export const VehiclesProvider = ({ children }: IVehiclesProvider) => {
   const loadVehicles = (searchParam: ISearch) => {
     setLoading(true)
     setError(null)
+    // Fetch the vehicles data
     getVehicles()
       .then(async (response) => {
+        // Get json data from boby
         const data = await response.json()
         console.debug(data)
-        if (response.ok) {
-          setVehicles(data)
+        if (data) {
+          if (response.ok) {
+            setVehicles(data)
+          } else {
+            setError(data.message)
+          }
         } else {
-          setError(data.message)
+          setError('Não foi possível carregar os dados')
         }
       })
       .catch((_error) => {
@@ -48,6 +54,7 @@ export const VehiclesProvider = ({ children }: IVehiclesProvider) => {
     console.debug('n implementado')
   }
 
+  // Cache the values to avoid unnecessary rendering
   const ctxValue = useMemo(
     () => ({
       vehicles,
