@@ -9,8 +9,8 @@ test('renders learn react link', () => {
       <VehiclesPage />
     </VehiclesProvider>
   )
-  const searchElement = screen.getByPlaceholderText(/search/i)
-  const buttonElement = screen.getByText(/add new vehicle/i)
+  const searchElement = screen.getByPlaceholderText(/Buscar/i)
+  const buttonElement = screen.getByText(/ADICIONAR/i)
   expect(searchElement).toBeInTheDocument()
   expect(buttonElement).toBeInTheDocument()
 })

@@ -1,7 +1,7 @@
 import { createContext, useMemo, useState } from 'react'
 import { ISearch } from '../types/Search'
 import { IVehicle, IVehiclePayload } from '../types/Vehicle'
-import { getVehicles } from '../lib/api'
+import api from '../lib/api'
 
 export interface IVehiclesContext {
   vehicles: IVehicle[]
@@ -26,11 +26,13 @@ export const VehiclesProvider = ({ children }: IVehiclesProvider) => {
     setLoading(true)
     setError(null)
     // Fetch the vehicles data
-    getVehicles()
+    api
+      .getVehicles()
       .then(async (response) => {
         // Get json data from boby
         const data = await response.json()
         console.debug(data)
+
         if (data) {
           if (response.ok) {
             setVehicles(data)
@@ -51,7 +53,33 @@ export const VehiclesProvider = ({ children }: IVehiclesProvider) => {
   }
 
   const addVehicle = (vehicle: IVehiclePayload) => {
-    console.debug('n implementado')
+    setError(null)
+    // Fetch the vehicles data
+    api
+      .addVehicle(vehicle)
+      .then(async (response) => {
+        // Get json data from boby
+        const data = await response.json()
+        console.debug(data)
+
+        if (data) {
+          if (response.ok) {
+            // Adds to the vehicles list
+            setVehicles([data as IVehicle, ...vehicles])
+          } else {
+            setError(data.message)
+          }
+        } else {
+          setError('Não foi possível criar o veículo')
+        }
+      })
+      .catch((_error) => {
+        console.debug(_error)
+        setError(_error.message)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   // Cache the values to avoid unnecessary rendering

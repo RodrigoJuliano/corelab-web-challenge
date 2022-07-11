@@ -1,7 +1,9 @@
+import styles from './Search.module.scss'
+
 interface ISearch {
   placeholder: string
   value: string
-  onChange: () => void
+  onChange: React.ChangeEventHandler<HTMLInputElement>
 }
 
 const Search = (props: ISearch) => {
@@ -9,6 +11,7 @@ const Search = (props: ISearch) => {
 
   return (
     <input
+      className={styles.search}
       type="text"
       placeholder={placeholder}
       value={value}

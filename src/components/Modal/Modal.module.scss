@@ -1,0 +1,39 @@
+.externalContainer {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(black, 0.5);
+  display: grid;
+  overflow-y: scroll;
+}
+
+.internalContainer {
+  max-width: 400px;
+  position: relative;
+  background-color: white;
+  margin: auto;
+  border-radius: 1rem;
+  padding: 30px 20px 20px;
+
+  .close_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    border-radius: 50%;
+    font-size: 18px;
+    height: 30px;
+    width: 30px;
+    line-height: 1;
+    flex-shrink: 0;
+    border: none;
+    background-color: lightgray;
+    cursor: pointer;
+
+    &:active {
+      transform: scale(1.1);
+      background-color: darkgrey;
+    }
+  }
+}
