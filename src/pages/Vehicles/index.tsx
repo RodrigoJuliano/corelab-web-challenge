@@ -7,9 +7,12 @@ import {
 } from '../../contexts/VehiclesContext'
 import translateColor from '../../utils/translateColor'
 import Conditional from '../../components/Conditional'
+import Modal from '../../components/Modal'
+import VehicleForm from '../../components/VehicleForm'
 
 const VehiclesPage = () => {
   const [search, setSearch] = useState<string>('')
+  const [showAddForm, setShowAddForm] = useState<boolean>(false)
   const { vehicles, loadVehicles, loading, error } = useContext(
     VehiclesContext
   ) as IVehiclesContext
@@ -22,19 +25,15 @@ const VehiclesPage = () => {
     <div className={styles.Vehicles}>
       <main className={styles.main}>
         <Search
-          placeholder="Search"
+          placeholder="Buscar"
           value={search}
-          onChange={() => {
+          onChange={(ev) => {
+            setSearch(ev.target.value)
             console.debug('Search changed')
           }}
         />
 
-        <Button
-          text="Add new vehicle"
-          onClick={() => {
-            console.debug('Add vehicle clicked')
-          }}
-        />
+        <Button text="ADICIONAR" onClick={() => setShowAddForm(true)} />
 
         <span>Anúncios</span>
 
@@ -80,22 +79,13 @@ const VehiclesPage = () => {
                   <p>Color: {translateColor(vehicle.color)}</p>
                 </Card>
               ))}
-              {vehicles.map((vehicle) => (
-                <Card
-                  key={vehicle.id}
-                  title={vehicle.name}
-                  color={vehicle.color}
-                >
-                  <p>Price: {vehicle.price}</p>
-                  <p>Description: {vehicle.description}</p>
-                  <p>Year: {vehicle.year}</p>
-                  <p>Color: {translateColor(vehicle.color)}</p>
-                </Card>
-              ))}
             </Conditional>
           </Conditional>
         </div>
       </main>
+      <Modal isOpen={showAddForm} onClickClose={() => setShowAddForm(false)}>
+        <VehicleForm />
+      </Modal>
     </div>
   )
 }

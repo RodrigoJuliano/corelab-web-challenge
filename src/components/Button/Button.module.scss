@@ -1,0 +1,19 @@
+@import '../../styles/colors.scss';
+
+.button {
+  background-color: $color-acent;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 2rem;
+  font-size: 1.2rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: translateY(2px);
+    background-color: darken($color-acent, 15%);
+    transition: 0.2s transform;
+  }
+}
