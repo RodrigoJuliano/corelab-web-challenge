@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { VehiclesProvider } from './contexts/VehiclesContext'
 import './index.module.scss'
 import VehiclesPage from './pages/Vehicles'
 import reportWebVitals from './reportWebVitals'
@@ -7,7 +8,9 @@ import reportWebVitals from './reportWebVitals'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    <VehiclesPage />
+    <VehiclesProvider>
+      <VehiclesPage />
+    </VehiclesProvider>
   </React.StrictMode>
 )
 

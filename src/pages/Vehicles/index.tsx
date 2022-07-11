@@ -1,23 +1,20 @@
-import { useEffect, useState } from 'react'
-import { getVehicles } from '../../lib/api'
+import { useContext, useEffect, useState } from 'react'
 import { Button, Card, Search } from '../../components'
 import styles from './Vehicles.module.scss'
-import { IVehicle } from '../../types/Vehicle'
+import {
+  VehiclesContext,
+  IVehiclesContext,
+} from '../../contexts/VehiclesContext'
 
 const VehiclesPage = () => {
-  const [vehicles, setVehicles] = useState<IVehicle[]>([])
   const [search, setSearch] = useState<string>('')
+  const { vehicles, loadVehicles, loading } = useContext(
+    VehiclesContext
+  ) as IVehiclesContext
 
   useEffect(() => {
-    const fetchVehicles = async () => {
-      const payload = await getVehicles()
-      setVehicles(payload)
-    }
-
-    fetchVehicles()
+    loadVehicles({ quantityPerPage: 50, page: 1 })
   }, [])
-
-  console.debug({ vehicles })
 
   return (
     <div className={styles.Vehicles}>
@@ -37,11 +34,18 @@ const VehiclesPage = () => {
           }}
         />
 
-        <Card title="Sandero Stepway">
-          <p>Price: 22000</p>
-          <p>Description: Carro usado por 2 anos...</p>
-          <p>Year: 2018</p>
-        </Card>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          vehicles.map((vehicle) => (
+            <Card key={vehicle.id} title={vehicle.name}>
+              <p>Price: {vehicle.price}</p>
+              <p>Description: {vehicle.description}</p>
+              <p>Year: {vehicle.year}</p>
+              <p>Color: {vehicle.color}</p>
+            </Card>
+          ))
+        )}
       </main>
     </div>
   )
