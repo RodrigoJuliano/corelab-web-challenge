@@ -1,24 +1,26 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import Button from '../Button'
 import styles from './VehicleForm.module.scss'
-import {
-  VehiclesContext,
-  IVehiclesContext,
-} from '../../contexts/VehiclesContext'
 import { IVehiclePayload } from '../../types/Vehicle'
 
-const VehicleForm = () => {
-  const [name, setName] = useState<string>('')
-  const [brand, setBrand] = useState<string>('')
-  const [color, setColor] = useState<string>('')
-  const [price, setPrice] = useState<number>(10000)
-  const [year, setYear] = useState<number>(2022)
-  const [plate, setPlate] = useState<string>('')
-  const [description, setDescription] = useState<string>('')
+interface IVehicleForm {
+  onSubmit: (v: IVehiclePayload) => void
+  vehicleBase?: IVehiclePayload
+}
 
-  const { addVehicle } = useContext(VehiclesContext) as IVehiclesContext
+const VehicleForm = ({ onSubmit, vehicleBase }: IVehicleForm) => {
+  // Use vehicleBase to initiate the form (for edit vehicle)
+  const [name, setName] = useState<string>(vehicleBase?.name ?? '')
+  const [brand, setBrand] = useState<string>(vehicleBase?.brand ?? '')
+  const [color, setColor] = useState<string>(vehicleBase?.color ?? '#f28b82')
+  const [price, setPrice] = useState<number>(vehicleBase?.price ?? 10000)
+  const [year, setYear] = useState<number>(vehicleBase?.year ?? 2022)
+  const [plate, setPlate] = useState<string>(vehicleBase?.plate ?? '')
+  const [description, setDescription] = useState<string>(
+    vehicleBase?.description ?? ''
+  )
 
-  const onSubmit = (ev: React.FormEvent) => {
+  const submitHandler = (ev: React.FormEvent) => {
     ev.preventDefault()
 
     const vehicle: IVehiclePayload = {
@@ -31,11 +33,11 @@ const VehicleForm = () => {
       description,
     }
 
-    addVehicle(vehicle)
+    onSubmit(vehicle)
   }
 
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
+    <form className={styles.form} onSubmit={submitHandler}>
       <label htmlFor="name">
         Nome
         <input
@@ -137,7 +139,8 @@ const VehicleForm = () => {
           type="text"
           className="form-control"
           name="plate"
-          maxLength={8}
+          maxLength={7}
+          minLength={7}
           id="plate"
           required
           value={plate}
@@ -160,6 +163,18 @@ const VehicleForm = () => {
       <Button text="Salvar" typeSubmit />
     </form>
   )
+}
+
+VehicleForm.defaultProps = {
+  vehicleBase: {
+    brand: '',
+    color: '#f28b82',
+    description: '',
+    name: '',
+    plate: '',
+    price: 10000,
+    year: 2022,
+  },
 }
 
 export default VehicleForm
