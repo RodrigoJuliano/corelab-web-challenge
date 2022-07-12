@@ -22,7 +22,7 @@ class API {
     this.fetcher(path, 'POST', body)
 
   patch = async (path: string, body: object): Promise<any> =>
-    this.fetcher(path, 'PATcH', body)
+    this.fetcher(path, 'PATCH', body)
 
   del = async (path: string): Promise<any> => this.fetcher(path, 'DELETE')
 
