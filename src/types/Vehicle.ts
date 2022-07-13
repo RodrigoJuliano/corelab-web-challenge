@@ -17,11 +17,14 @@ export type IVehiclePayload = Omit<
   'id' | 'is_favorite' | 'created_at' | 'modified_at'
 >
 
-const payloadFrom = (vehicle: IVehicle): IVehiclePayload => ({
+export const payloadFrom = (vehicle: IVehicle): IVehiclePayload => ({
   ...vehicle,
 })
 
-const merge = (vehicle: IVehicle, payload: IVehiclePayload) => ({
+export const merge = (
+  vehicle: IVehicle,
+  payload: IVehiclePayload
+): IVehicle => ({
   ...vehicle,
   ...payload,
 })

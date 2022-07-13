@@ -1,19 +1,23 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
-import { Button, Card, Search } from '../../components'
+import { Button, Search } from '../../components'
 import styles from './Vehicles.module.scss'
 import {
   VehiclesContext,
   IVehiclesContext,
 } from '../../contexts/VehiclesContext'
-import translateColor from '../../utils/translateColor'
 import Conditional from '../../components/Conditional'
 import Modal from '../../components/Modal'
 import VehicleForm from '../../components/VehicleForm'
-import { IVehicle, IVehiclePayload } from '../../types/Vehicle'
+import { IVehicle, IVehiclePayload, merge } from '../../types/Vehicle'
+import VehicleList from './VehicleList'
 
 const VehiclesPage = (): JSX.Element => {
   const [search, setSearch] = useState<string>('')
   const [showAddForm, setShowAddForm] = useState<boolean>(false)
+  const [editingVehicle, setEditingVehicle] = useState<IVehicle | undefined>(
+    undefined
+  )
+
   const { vehicles, loadVehicles, loading, error, addVehicle, updateVehicle } =
     useContext(VehiclesContext) as IVehiclesContext
 
@@ -25,6 +29,15 @@ const VehiclesPage = (): JSX.Element => {
     addVehicle(v)
     // TODO: wait confirmation befere closing the form
     setShowAddForm(false)
+  }
+
+  const onSubmitEditVehicle = (v: IVehiclePayload): void => {
+    if (editingVehicle !== undefined) {
+      const merged = merge(editingVehicle as IVehicle, v)
+      updateVehicle(merged)
+      // TODO: wait confirmation befere closing the form
+      setEditingVehicle(undefined)
+    }
   }
 
   const onClickFavorite = (v: IVehicle): void => {
@@ -62,76 +75,41 @@ const VehiclesPage = (): JSX.Element => {
 
         <Button text="ADICIONAR" onClick={() => setShowAddForm(true)} />
 
-        <span>Favoritos</span>
+        <Conditional condition={!loading} fallback={<div>Loading...</div>}>
+          <Conditional condition={error === null} fallback={<div>{error}</div>}>
+            <VehicleList
+              title="Favoritos"
+              vehicles={favorites}
+              onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
+              onClickDelete={() => {
+                console.debug('nao implementado')
+              }}
+              onClickFavorite={onClickFavorite}
+            />
 
-        <div className={styles.cardsContainer}>
-          <Conditional condition={!loading} fallback={<div>Loading...</div>}>
-            <Conditional
-              condition={error === null}
-              fallback={<div>{error}</div>}
-            >
-              {favorites?.map((vehicle) => (
-                <Card
-                  key={vehicle.id}
-                  title={vehicle.name}
-                  color={vehicle.color}
-                  onClickEdit={() => {
-                    console.debug('nao implementado')
-                  }}
-                  onClickDelete={() => {
-                    console.debug('nao implementado')
-                  }}
-                  onClickFavorite={() => {
-                    onClickFavorite(vehicle)
-                  }}
-                >
-                  <p>Price: {vehicle.price}</p>
-                  <p>Description: {vehicle.description}</p>
-                  <p>Year: {vehicle.year}</p>
-                  <p>Color: {translateColor(vehicle.color)}</p>
-                  <p>Plate: {vehicle.plate}</p>
-                </Card>
-              ))}
-            </Conditional>
+            <VehicleList
+              title="Anúncios"
+              vehicles={nonFavorites}
+              onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
+              onClickDelete={() => {
+                console.debug('nao implementado')
+              }}
+              onClickFavorite={onClickFavorite}
+            />
           </Conditional>
-        </div>
-
-        <span>Anúncios</span>
-
-        <div className={styles.cardsContainer}>
-          <Conditional condition={!loading} fallback={<div>Loading...</div>}>
-            <Conditional
-              condition={error === null}
-              fallback={<div>{error}</div>}
-            >
-              {nonFavorites?.map((vehicle) => (
-                <Card
-                  key={vehicle.id}
-                  title={vehicle.name}
-                  color={vehicle.color}
-                  onClickEdit={() => {
-                    console.debug('nao implementado')
-                  }}
-                  onClickDelete={() => {
-                    console.debug('nao implementado')
-                  }}
-                  onClickFavorite={() => {
-                    onClickFavorite(vehicle)
-                  }}
-                >
-                  <p>Price: {vehicle.price}</p>
-                  <p>Description: {vehicle.description}</p>
-                  <p>Year: {vehicle.year}</p>
-                  <p>Color: {translateColor(vehicle.color)}</p>
-                  <p>Plate: {vehicle.plate}</p>
-                </Card>
-              ))}
-            </Conditional>
-          </Conditional>
-        </div>
+        </Conditional>
       </main>
       <Modal isOpen={showAddForm} onClickClose={() => setShowAddForm(false)}>
         <VehicleForm onSubmit={onSubmitAddVehicle} />
+      </Modal>
+      <Modal
+        isOpen={editingVehicle !== undefined}
+        onClickClose={() => setEditingVehicle(undefined)}
+      >
+        <VehicleForm
+          vehicleBase={editingVehicle}
+          onSubmit={onSubmitEditVehicle}
+        />
       </Modal>
     </div>
   )
