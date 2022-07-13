@@ -10,6 +10,7 @@ export interface IVehiclesContext {
   loadVehicles: (searchParam: ISearch) => void
   addVehicle: (vehicle: IVehiclePayload) => void
   updateVehicle: (vehicle: IVehicle) => void
+  deleteVehicle: (vehicle: IVehicle) => void
 }
 
 interface IVehiclesProvider {
@@ -112,8 +113,29 @@ export const VehiclesProvider = ({
         console.debug(_error)
         setError(_error.message)
       })
-      .finally(() => {
-        setLoading(false)
+  }
+
+  const deleteVehicle = (vehicle: IVehicle): void => {
+    setError(null)
+    api
+      .deleteVehicle(vehicle.id)
+      .then(async (response) => {
+        // Get json data from boby
+        if (response.ok) {
+          const index = vehicles.findIndex((v) => v.id === vehicle.id)
+          if (index > -1) {
+            vehicles.splice(index, 1)
+            setVehicles([...vehicles])
+          }
+        } else {
+          const data = await response.json()
+          console.debug(data)
+          setError(data.message)
+        }
+      })
+      .catch((_error) => {
+        console.debug(_error)
+        setError(_error.message)
       })
   }
 
@@ -126,6 +148,7 @@ export const VehiclesProvider = ({
       loadVehicles,
       addVehicle,
       updateVehicle,
+      deleteVehicle,
     }),
     [vehicles, loading, error]
   )

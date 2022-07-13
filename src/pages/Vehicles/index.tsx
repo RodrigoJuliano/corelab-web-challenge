@@ -18,8 +18,15 @@ const VehiclesPage = (): JSX.Element => {
     undefined
   )
 
-  const { vehicles, loadVehicles, loading, error, addVehicle, updateVehicle } =
-    useContext(VehiclesContext) as IVehiclesContext
+  const {
+    vehicles,
+    loadVehicles,
+    loading,
+    error,
+    addVehicle,
+    updateVehicle,
+    deleteVehicle,
+  } = useContext(VehiclesContext) as IVehiclesContext
 
   useEffect(() => {
     loadVehicles({ quantityPerPage: 50, page: 1 })
@@ -81,9 +88,7 @@ const VehiclesPage = (): JSX.Element => {
               title="Favoritos"
               vehicles={favorites}
               onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
-              onClickDelete={() => {
-                console.debug('nao implementado')
-              }}
+              onClickDelete={deleteVehicle}
               onClickFavorite={onClickFavorite}
             />
 
@@ -91,9 +96,7 @@ const VehiclesPage = (): JSX.Element => {
               title="Anúncios"
               vehicles={nonFavorites}
               onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
-              onClickDelete={() => {
-                console.debug('nao implementado')
-              }}
+              onClickDelete={deleteVehicle}
               onClickFavorite={onClickFavorite}
             />
           </Conditional>
