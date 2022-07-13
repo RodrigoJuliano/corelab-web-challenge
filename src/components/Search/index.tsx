@@ -6,7 +6,7 @@ interface ISearch {
   onChange: React.ChangeEventHandler<HTMLInputElement>
 }
 
-const Search = (props: ISearch) => {
+const Search = (props: ISearch): JSX.Element => {
   const { placeholder, value, onChange } = props
 
   return (

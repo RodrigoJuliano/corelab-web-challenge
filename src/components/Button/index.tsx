@@ -6,7 +6,7 @@ interface IButton {
   typeSubmit?: boolean
 }
 
-const Button = (props: IButton) => {
+const Button = (props: IButton): JSX.Element => {
   const { text, onClick = null, typeSubmit } = props
 
   return (

@@ -9,37 +9,41 @@ interface IModal {
   onClickClose: () => void
 }
 
-const Modal = ({ children, isOpen, onClickClose }: IModal) => {
+const Modal = ({ children, isOpen, onClickClose }: IModal): JSX.Element => {
   // Container element for the modal
   const externalContainerRef = useRef(document.createElement('div'))
 
   // Add the container to root element on mount
   useEffect(() => {
+    const extContainer = externalContainerRef.current
     const modalRoot = document.getElementById('modal-root')
-    modalRoot?.appendChild(externalContainerRef.current)
+    modalRoot?.appendChild(extContainer)
     // Add container styles
-    externalContainerRef.current.classList.add(styles.externalContainer)
+    extContainer.classList.add(styles.externalContainer)
+
     return () => {
       // remove the container on unmount
-      modalRoot?.removeChild(externalContainerRef.current)
+      modalRoot?.removeChild(extContainer)
     }
   }, [])
 
   // Register eventlistener to close the modal on clicking outside
   useEffect(() => {
-    const clickHandler = (e: MouseEvent) => {
-      if (e.target === externalContainerRef.current) {
+    const extContainer = externalContainerRef.current
+
+    const clickHandler = (e: MouseEvent): void => {
+      if (e.target === extContainer) {
         onClickClose()
       }
     }
-    externalContainerRef.current.addEventListener('click', clickHandler, {
+    extContainer.addEventListener('click', clickHandler, {
       passive: true,
     })
 
     return () => {
-      externalContainerRef.current.removeEventListener('click', onClickClose)
+      extContainer.removeEventListener('click', onClickClose)
     }
-  }, [])
+  }, [onClickClose])
 
   // Hide / show the modal
   useEffect(() => {

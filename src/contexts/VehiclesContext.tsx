@@ -18,12 +18,14 @@ interface IVehiclesProvider {
 
 export const VehiclesContext = createContext<IVehiclesContext | null>(null)
 
-export const VehiclesProvider = ({ children }: IVehiclesProvider) => {
+export const VehiclesProvider = ({
+  children,
+}: IVehiclesProvider): JSX.Element => {
   const [vehicles, setVehicles] = useState<IVehicle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
-  const loadVehicles = (searchParam: ISearch) => {
+  const loadVehicles = (searchParam: ISearch): void => {
     setLoading(true)
     setError(null)
     // Fetch the vehicles data
@@ -53,7 +55,7 @@ export const VehiclesProvider = ({ children }: IVehiclesProvider) => {
       })
   }
 
-  const addVehicle = (vehicle: IVehiclePayload) => {
+  const addVehicle = (vehicle: IVehiclePayload): void => {
     setError(null)
     api
       .addVehicle(vehicle)
@@ -82,7 +84,7 @@ export const VehiclesProvider = ({ children }: IVehiclesProvider) => {
       })
   }
 
-  const updateVehicle = (vehicle: IVehicle) => {
+  const updateVehicle = (vehicle: IVehicle): void => {
     setError(null)
     api
       .updateVehicle(vehicle)
