@@ -8,7 +8,7 @@ interface IVehicleForm {
   vehicleBase?: IVehiclePayload
 }
 
-const VehicleForm = ({ onSubmit, vehicleBase }: IVehicleForm) => {
+const VehicleForm = ({ onSubmit, vehicleBase }: IVehicleForm): JSX.Element => {
   // Use vehicleBase to initiate the form (for edit vehicle)
   const [name, setName] = useState<string>(vehicleBase?.name ?? '')
   const [brand, setBrand] = useState<string>(vehicleBase?.brand ?? '')
@@ -20,7 +20,7 @@ const VehicleForm = ({ onSubmit, vehicleBase }: IVehicleForm) => {
     vehicleBase?.description ?? ''
   )
 
-  const submitHandler = (ev: React.FormEvent) => {
+  const submitHandler = (ev: React.FormEvent): void => {
     ev.preventDefault()
 
     const vehicle: IVehiclePayload = {

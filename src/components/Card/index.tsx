@@ -14,7 +14,7 @@ interface ICard {
   onClickFavorite: () => void
 }
 
-const Card = (props: ICard) => {
+const Card = (props: ICard): JSX.Element => {
   const {
     title,
     color,

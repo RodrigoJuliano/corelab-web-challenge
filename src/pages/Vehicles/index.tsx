@@ -11,7 +11,7 @@ import Modal from '../../components/Modal'
 import VehicleForm from '../../components/VehicleForm'
 import { IVehicle, IVehiclePayload } from '../../types/Vehicle'
 
-const VehiclesPage = () => {
+const VehiclesPage = (): JSX.Element => {
   const [search, setSearch] = useState<string>('')
   const [showAddForm, setShowAddForm] = useState<boolean>(false)
   const { vehicles, loadVehicles, loading, error, addVehicle, updateVehicle } =
@@ -21,13 +21,13 @@ const VehiclesPage = () => {
     loadVehicles({ quantityPerPage: 50, page: 1 })
   }, [])
 
-  const onSubmitAddVehicle = (v: IVehiclePayload) => {
+  const onSubmitAddVehicle = (v: IVehiclePayload): void => {
     addVehicle(v)
     // TODO: wait confirmation befere closing the form
     setShowAddForm(false)
   }
 
-  const onClickFavorite = (v: IVehicle) => {
+  const onClickFavorite = (v: IVehicle): void => {
     const cp = v
     cp.is_favorite = !cp.is_favorite
     updateVehicle(cp)

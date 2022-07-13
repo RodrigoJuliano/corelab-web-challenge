@@ -1,4 +1,3 @@
-import React, { ReactNode } from 'react'
 import styles from './IconButton.module.scss'
 
 interface IIconButton {
@@ -8,7 +7,7 @@ interface IIconButton {
   alt?: string
 }
 
-const IconButton = ({ icon, size, onClick, alt }: IIconButton) => (
+const IconButton = ({ icon, size, onClick, alt }: IIconButton): JSX.Element => (
   <button type="button" className={styles.button} onClick={onClick}>
     <img src={icon} width={size} height={size} alt={alt} />
   </button>

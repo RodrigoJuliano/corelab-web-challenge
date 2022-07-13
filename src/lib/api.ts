@@ -3,32 +3,33 @@ import { IVehicle, IVehiclePayload } from '../types/Vehicle'
 class API {
   API_base = 'http://localhost:3333'
 
-  getVehicles = async () => this.get('/vehicles')
+  getVehicles = async (): Promise<Response> => this.get('/vehicles')
 
-  addVehicle = async (vehicle: IVehiclePayload) =>
+  addVehicle = async (vehicle: IVehiclePayload): Promise<Response> =>
     this.post('/vehicles', vehicle)
 
-  updateVehicle = async (vehicle: IVehicle) =>
+  updateVehicle = async (vehicle: IVehicle): Promise<Response> =>
     this.patch(`/vehicles/${vehicle.id}`, vehicle)
 
-  deleteVehicle = async (id: number) => this.del(`/vehicles/${id}`)
+  deleteVehicle = async (id: number): Promise<Response> =>
+    this.del(`/vehicles/${id}`)
 
-  getById = async (id: number) => this.get(`/vehicles/${id}`)
+  getById = async (id: number): Promise<Response> => this.get(`/vehicles/${id}`)
 
   // Auxiliary methods
-  get = async (path: string): Promise<any> => this.fetcher(path, 'Get')
+  get = async (path: string): Promise<Response> => this.fetcher(path, 'Get')
 
-  post = async (path: string, body: object): Promise<any> =>
+  post = async (path: string, body: object): Promise<Response> =>
     this.fetcher(path, 'POST', body)
 
-  patch = async (path: string, body: object): Promise<any> =>
+  patch = async (path: string, body: object): Promise<Response> =>
     this.fetcher(path, 'PATCH', body)
 
-  del = async (path: string): Promise<any> => this.fetcher(path, 'DELETE')
+  del = async (path: string): Promise<Response> => this.fetcher(path, 'DELETE')
 
   endpoint = (path: string): string => this.API_base + path
 
-  fetcher = (path: string, method: string, body?: object) =>
+  fetcher = (path: string, method: string, body?: object): Promise<Response> =>
     fetch(this.endpoint(path), {
       method,
       body: JSON.stringify(body),
