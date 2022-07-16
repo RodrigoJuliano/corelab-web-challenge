@@ -7,9 +7,11 @@ import {
 } from '../../contexts/VehiclesContext'
 import Conditional from '../../components/Conditional'
 import Modal from '../../components/Modal'
-import VehicleForm from '../../components/VehicleForm'
+import AddVehicleForm from '../../components/AddVehicleForm'
 import { IVehicle, IVehiclePayload, merge } from '../../types/Vehicle'
+import { IVehicleFilters } from '../../types/VehicleFilters'
 import VehicleList from './VehicleList'
+import VehicleFilterForm from '../../components/VehicleFilterForm'
 
 const VehiclesPage = (): JSX.Element => {
   const [search, setSearch] = useState<string>('')
@@ -17,6 +19,8 @@ const VehiclesPage = (): JSX.Element => {
   const [editingVehicle, setEditingVehicle] = useState<IVehicle | undefined>(
     undefined
   )
+  const [showFilterForm, setShowFilterForm] = useState<boolean>(false)
+  const [filters, setFilters] = useState<IVehicleFilters>({})
 
   const {
     vehicles,
@@ -45,6 +49,12 @@ const VehiclesPage = (): JSX.Element => {
       // TODO: wait confirmation befere closing the form
       setEditingVehicle(undefined)
     }
+  }
+
+  const onSubmitFilters = (f: IVehicleFilters): void => {
+    setFilters(f)
+    setShowFilterForm(false)
+    loadVehicles({ quantityPerPage: 50, page: 1, filters: f })
   }
 
   const onClickFavorite = (v: IVehicle): void => {
@@ -78,6 +88,7 @@ const VehiclesPage = (): JSX.Element => {
             setSearch(ev.target.value)
             console.debug('Search changed')
           }}
+          onClickFilter={() => setShowFilterForm(true)}
         />
 
         <Button text="ADICIONAR" onClick={() => setShowAddForm(true)} />
@@ -103,16 +114,22 @@ const VehiclesPage = (): JSX.Element => {
         </Conditional>
       </main>
       <Modal isOpen={showAddForm} onClickClose={() => setShowAddForm(false)}>
-        <VehicleForm onSubmit={onSubmitAddVehicle} />
+        <AddVehicleForm onSubmit={onSubmitAddVehicle} />
       </Modal>
       <Modal
         isOpen={editingVehicle !== undefined}
         onClickClose={() => setEditingVehicle(undefined)}
       >
-        <VehicleForm
+        <AddVehicleForm
           vehicleBase={editingVehicle}
           onSubmit={onSubmitEditVehicle}
         />
+      </Modal>
+      <Modal
+        isOpen={showFilterForm}
+        onClickClose={() => setShowFilterForm(false)}
+      >
+        <VehicleFilterForm filters={filters} onSubmit={onSubmitFilters} />
       </Modal>
     </div>
   )

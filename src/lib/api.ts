@@ -1,9 +1,32 @@
+import { ISearch } from '../types/Search'
 import { IVehicle, IVehiclePayload } from '../types/Vehicle'
+import { IVehicleFilters } from '../types/VehicleFilters'
 
 class API {
-  API_base = 'http://localhost:3333'
+  API_base = process.env.REACT_APP_API_URL
 
-  getVehicles = async (): Promise<Response> => this.get('/vehicles')
+  getVehicles = async (searchParams: ISearch): Promise<Response> => {
+    const params = new URLSearchParams()
+
+    Object.keys(searchParams).forEach((key) => {
+      if (key !== 'filters')
+        params.append(key, String(searchParams[key as keyof ISearch]))
+    })
+
+    // Convert the filters object to filters_x parameters
+    if (searchParams.filters) {
+      const filters = searchParams.filters ?? {}
+      Object.keys(searchParams.filters).forEach((key) => {
+        if (filters[key as keyof IVehicleFilters])
+          params.append(
+            `filters_${key}`,
+            String(filters[key as keyof IVehicleFilters])
+          )
+      })
+    }
+
+    return this.get(`/vehicles?${params.toString()}`)
+  }
 
   addVehicle = async (vehicle: IVehiclePayload): Promise<Response> =>
     this.post('/vehicles', vehicle)
@@ -17,7 +40,7 @@ class API {
   getById = async (id: number): Promise<Response> => this.get(`/vehicles/${id}`)
 
   // Auxiliary methods
-  get = async (path: string): Promise<Response> => this.fetcher(path, 'Get')
+  get = async (path: string): Promise<Response> => this.fetcher(path, 'GET')
 
   post = async (path: string, body: object): Promise<Response> =>
     this.fetcher(path, 'POST', body)
