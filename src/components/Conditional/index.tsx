@@ -7,7 +7,9 @@ interface IConditional {
 }
 
 // Render children if condition is true, otherwise render fallback
-const Conditional = ({ children, fallback, condition }: IConditional): any => {
+const Conditional = (props: IConditional): any => {
+  const { children, fallback, condition } = props
+
   if (condition) {
     return children
   }

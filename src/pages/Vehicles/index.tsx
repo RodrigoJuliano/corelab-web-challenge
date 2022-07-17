@@ -84,38 +84,42 @@ const VehiclesPage = (): JSX.Element => {
   }, [vehicles])
 
   return (
-    <div className={styles.Vehicles}>
-      <main className={styles.main}>
-        <header className={styles.header}>
-          <Search placeholder="Buscar" onSubmit={onSubmitSearch} />
-          <IconButton
-            icon={FiltersIcon}
-            onClick={() => setShowFilterForm(true)}
+    <main className={styles.Vehicles}>
+      <header className={styles.header}>
+        <Search placeholder="Buscar" onSubmit={onSubmitSearch} />
+        <IconButton
+          icon={FiltersIcon}
+          onClick={() => setShowFilterForm(true)}
+        />
+      </header>
+
+      <Button text="ADICIONAR" onClick={() => setShowAddForm(true)} />
+
+      <Conditional
+        condition={!loading}
+        fallback={<div className={styles.fallback}>Loading...</div>}
+      >
+        <Conditional
+          condition={error === null}
+          fallback={<div className={styles.fallback}>{error}</div>}
+        >
+          <VehicleList
+            title="Favoritos"
+            vehicles={favorites}
+            onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
+            onClickDelete={deleteVehicle}
+            onClickFavorite={onClickFavorite}
           />
-        </header>
 
-        <Button text="ADICIONAR" onClick={() => setShowAddForm(true)} />
-
-        <Conditional condition={!loading} fallback={<div>Loading...</div>}>
-          <Conditional condition={error === null} fallback={<div>{error}</div>}>
-            <VehicleList
-              title="Favoritos"
-              vehicles={favorites}
-              onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
-              onClickDelete={deleteVehicle}
-              onClickFavorite={onClickFavorite}
-            />
-
-            <VehicleList
-              title="Anúncios"
-              vehicles={nonFavorites}
-              onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
-              onClickDelete={deleteVehicle}
-              onClickFavorite={onClickFavorite}
-            />
-          </Conditional>
+          <VehicleList
+            title="Anúncios"
+            vehicles={nonFavorites}
+            onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
+            onClickDelete={deleteVehicle}
+            onClickFavorite={onClickFavorite}
+          />
         </Conditional>
-      </main>
+      </Conditional>
       <Modal isOpen={showAddForm} onClickClose={() => setShowAddForm(false)}>
         <AddVehicleForm onSubmit={onSubmitAddVehicle} />
       </Modal>
@@ -134,7 +138,7 @@ const VehiclesPage = (): JSX.Element => {
       >
         <VehicleFilterForm filters={filters} onSubmit={onSubmitFilters} />
       </Modal>
-    </div>
+    </main>
   )
 }
 

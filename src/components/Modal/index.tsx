@@ -9,7 +9,9 @@ interface IModal {
   onClickClose: () => void
 }
 
-const Modal = ({ children, isOpen, onClickClose }: IModal): JSX.Element => {
+const Modal = (props: IModal): JSX.Element => {
+  const { children, isOpen, onClickClose } = props
+
   // Container element for the modal
   const externalContainerRef = useRef(document.createElement('div'))
 

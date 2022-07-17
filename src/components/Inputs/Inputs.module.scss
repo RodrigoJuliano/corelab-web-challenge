@@ -1,0 +1,21 @@
+@import '../../styles/colors.scss';
+
+.label {
+  text-indent: 0.8rem;
+
+  input,
+  select {
+    width: 100%;
+    padding: 0.4rem 1rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    border: 1px solid black;
+    margin-bottom: 5px;
+
+    &:focus,
+    &:active {
+      border-color: darken($color-acent, 20%);
+      outline: none;
+    }
+  }
+}

@@ -9,9 +9,9 @@ interface ICard {
   title: string
   children: ReactNode
   color: string
-  onClickEdit: () => void
-  onClickDelete: () => void
-  onClickFavorite: () => void
+  onClickEdit?: () => void
+  onClickDelete?: () => void
+  onClickFavorite?: () => void
 }
 
 const Card = (props: ICard): JSX.Element => {

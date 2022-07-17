@@ -7,7 +7,7 @@ interface IButton {
 }
 
 const Button = (props: IButton): JSX.Element => {
-  const { text, onClick = null, typeSubmit } = props
+  const { text, onClick = null, typeSubmit = false } = props
 
   return (
     <button
@@ -19,7 +19,5 @@ const Button = (props: IButton): JSX.Element => {
     </button>
   )
 }
-
-Button.defaultProps = { onClick: null, typeSubmit: false }
 
 export default Button

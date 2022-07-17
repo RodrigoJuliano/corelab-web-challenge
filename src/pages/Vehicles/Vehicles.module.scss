@@ -1,15 +1,13 @@
 @import '../../styles/break-points.scss';
 
+$card_width: 300px;
+
 .Vehicles {
   display: grid;
   padding: 1rem 2rem;
-
-  .main {
-    display: grid;
-    gap: 1rem;
-    width: fit-content;
-    margin: auto;
-  }
+  gap: 1rem;
+  width: fit-content;
+  margin: auto;
 
   .cardsContainer {
     display: grid;
@@ -27,24 +25,37 @@
   }
 
   @include laptop {
-    .cardsContainer {
-      grid-template-columns: repeat(2, 300px);
-    }
-
     .header {
       width: 60%;
+    }
+
+    .cardsContainer {
+      grid-template-columns: repeat(2, $card_width);
+    }
+
+    // Makes the fallback the same size as the contents
+    .fallback {
+      width: calc(2 * #{$card_width} + 1 * 1rem);
     }
   }
 
   @include desktop {
     .cardsContainer {
-      grid-template-columns: repeat(3, 300px);
+      grid-template-columns: repeat(3, $card_width);
+    }
+
+    .fallback {
+      width: calc(3 * #{$card_width} + 2 * 1rem);
     }
   }
 
   @include desktop-large {
     .cardsContainer {
-      grid-template-columns: repeat(4, 300px);
+      grid-template-columns: repeat(4, $card_width);
+    }
+
+    .fallback {
+      width: calc(4 * #{$card_width} + 3 * 1rem);
     }
   }
 }

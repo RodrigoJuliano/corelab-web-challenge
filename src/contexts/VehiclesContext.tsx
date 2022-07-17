@@ -19,9 +19,9 @@ interface IVehiclesProvider {
 
 export const VehiclesContext = createContext<IVehiclesContext | null>(null)
 
-export const VehiclesProvider = ({
-  children,
-}: IVehiclesProvider): JSX.Element => {
+export const VehiclesProvider = (props: IVehiclesProvider): JSX.Element => {
+  const { children } = props
+
   const [vehicles, setVehicles] = useState<IVehicle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)

@@ -11,33 +11,31 @@ interface IVehicleList {
   onClickFavorite: (v: IVehicle) => void
 }
 
-const VehicleList = ({
-  title,
-  vehicles,
-  onClickEdit,
-  onClickDelete,
-  onClickFavorite,
-}: IVehicleList): JSX.Element => (
-  <>
-    <span>{title}</span>
-    <div className={styles.cardsContainer}>
-      {vehicles?.map((vehicle) => (
-        <Card
-          key={vehicle.id}
-          title={vehicle.name}
-          color={vehicle.color}
-          onClickEdit={() => onClickEdit(vehicle)}
-          onClickDelete={() => onClickDelete(vehicle)}
-          onClickFavorite={() => onClickFavorite(vehicle)}
-        >
-          <p>Price: {vehicle.price}</p>
-          <p>Description: {vehicle.description}</p>
-          <p>Year: {vehicle.year}</p>
-          <p>Color: {translateColor(vehicle.color)}</p>
-        </Card>
-      ))}
-    </div>
-  </>
-)
+const VehicleList = (props: IVehicleList): JSX.Element => {
+  const { title, vehicles, onClickEdit, onClickDelete, onClickFavorite } = props
+
+  return (
+    <>
+      <span>{title}</span>
+      <div className={styles.cardsContainer}>
+        {vehicles?.map((vehicle) => (
+          <Card
+            key={vehicle.id}
+            title={vehicle.name}
+            color={vehicle.color}
+            onClickEdit={() => onClickEdit(vehicle)}
+            onClickDelete={() => onClickDelete(vehicle)}
+            onClickFavorite={() => onClickFavorite(vehicle)}
+          >
+            <p>Price: {vehicle.price}</p>
+            <p>Description: {vehicle.description}</p>
+            <p>Year: {vehicle.year}</p>
+            <p>Color: {translateColor(vehicle.color)}</p>
+          </Card>
+        ))}
+      </div>
+    </>
+  )
+}
 
 export default VehicleList
