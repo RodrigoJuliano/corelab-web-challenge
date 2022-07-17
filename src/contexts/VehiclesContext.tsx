@@ -26,12 +26,12 @@ export const VehiclesProvider = ({
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
-  const loadVehicles = (searchParam: ISearch): void => {
+  const loadVehicles = (searchParams: ISearch): void => {
     setLoading(true)
     setError(null)
     // Fetch the vehicles data
     api
-      .getVehicles()
+      .getVehicles(searchParams)
       .then(async (response) => {
         // Get json data from boby
         const data = await response.json()

@@ -7,16 +7,21 @@ import {
 } from '../../contexts/VehiclesContext'
 import Conditional from '../../components/Conditional'
 import Modal from '../../components/Modal'
-import VehicleForm from '../../components/VehicleForm'
+import AddVehicleForm from '../../components/AddVehicleForm'
 import { IVehicle, IVehiclePayload, merge } from '../../types/Vehicle'
+import { IVehicleFilters } from '../../types/VehicleFilters'
 import VehicleList from './VehicleList'
+import VehicleFilterForm from '../../components/VehicleFilterForm'
+import IconButton from '../../components/IconButton'
+import FiltersIcon from '../../assets/filters.png'
 
 const VehiclesPage = (): JSX.Element => {
-  const [search, setSearch] = useState<string>('')
   const [showAddForm, setShowAddForm] = useState<boolean>(false)
   const [editingVehicle, setEditingVehicle] = useState<IVehicle | undefined>(
     undefined
   )
+  const [showFilterForm, setShowFilterForm] = useState<boolean>(false)
+  const [filters, setFilters] = useState<IVehicleFilters>({})
 
   const {
     vehicles,
@@ -47,6 +52,16 @@ const VehiclesPage = (): JSX.Element => {
     }
   }
 
+  const onSubmitFilters = (f: IVehicleFilters): void => {
+    setFilters(f)
+    setShowFilterForm(false)
+    loadVehicles({ quantityPerPage: 50, page: 1, filters: f })
+  }
+
+  const onSubmitSearch = (str: string): void => {
+    loadVehicles({ searchString: str, quantityPerPage: 50, page: 1, filters })
+  }
+
   const onClickFavorite = (v: IVehicle): void => {
     const cp = v
     cp.is_favorite = !cp.is_favorite
@@ -71,14 +86,13 @@ const VehiclesPage = (): JSX.Element => {
   return (
     <div className={styles.Vehicles}>
       <main className={styles.main}>
-        <Search
-          placeholder="Buscar"
-          value={search}
-          onChange={(ev) => {
-            setSearch(ev.target.value)
-            console.debug('Search changed')
-          }}
-        />
+        <header className={styles.header}>
+          <Search placeholder="Buscar" onSubmit={onSubmitSearch} />
+          <IconButton
+            icon={FiltersIcon}
+            onClick={() => setShowFilterForm(true)}
+          />
+        </header>
 
         <Button text="ADICIONAR" onClick={() => setShowAddForm(true)} />
 
@@ -103,16 +117,22 @@ const VehiclesPage = (): JSX.Element => {
         </Conditional>
       </main>
       <Modal isOpen={showAddForm} onClickClose={() => setShowAddForm(false)}>
-        <VehicleForm onSubmit={onSubmitAddVehicle} />
+        <AddVehicleForm onSubmit={onSubmitAddVehicle} />
       </Modal>
       <Modal
         isOpen={editingVehicle !== undefined}
         onClickClose={() => setEditingVehicle(undefined)}
       >
-        <VehicleForm
+        <AddVehicleForm
           vehicleBase={editingVehicle}
           onSubmit={onSubmitEditVehicle}
         />
+      </Modal>
+      <Modal
+        isOpen={showFilterForm}
+        onClickClose={() => setShowFilterForm(false)}
+      >
+        <VehicleFilterForm filters={filters} onSubmit={onSubmitFilters} />
       </Modal>
     </div>
   )

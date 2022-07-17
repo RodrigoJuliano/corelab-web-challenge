@@ -1,7 +1,7 @@
 import { IVehicleFilters } from './VehicleFilters'
 
 export interface ISearch {
-  term?: string
+  searchString?: string
   quantityPerPage: number
   page: number
   filters?: IVehicleFilters

@@ -1,22 +1,29 @@
+import { useState } from 'react'
+import SearchIcon from '../../assets/Search.svg'
 import styles from './Search.module.scss'
 
 interface ISearch {
   placeholder: string
-  value: string
-  onChange: React.ChangeEventHandler<HTMLInputElement>
+  onSubmit: (s: string) => void
 }
 
 const Search = (props: ISearch): JSX.Element => {
-  const { placeholder, value, onChange } = props
+  const [search, setSearch] = useState<string>('')
+  const { placeholder, onSubmit } = props
 
   return (
-    <input
-      className={styles.search}
-      type="text"
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-    />
+    <div className={styles.searchContainer}>
+      <img src={SearchIcon} alt="search icon" />
+      <input
+        type="search"
+        placeholder={placeholder}
+        value={search}
+        onChange={(ev) => setSearch(ev.target.value)}
+        onKeyDown={(ev) => {
+          if (ev.key === 'Enter') onSubmit(search)
+        }}
+      />
+    </div>
   )
 }
 

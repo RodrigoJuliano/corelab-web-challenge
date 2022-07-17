@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import Button from '../Button'
-import styles from './VehicleForm.module.scss'
+import styles from './AddVehicleForm.module.scss'
 import { IVehiclePayload } from '../../types/Vehicle'
 
-interface IVehicleForm {
+interface IAddVehicleForm {
   onSubmit: (v: IVehiclePayload) => void
   vehicleBase?: IVehiclePayload
 }
 
-const VehicleForm = ({ onSubmit, vehicleBase }: IVehicleForm): JSX.Element => {
+const AddVehicleForm = ({
+  onSubmit,
+  vehicleBase,
+}: IAddVehicleForm): JSX.Element => {
   // Use vehicleBase to initiate the form (for edit vehicle)
   const [name, setName] = useState<string>(vehicleBase?.name ?? '')
   const [brand, setBrand] = useState<string>(vehicleBase?.brand ?? '')
@@ -165,7 +168,7 @@ const VehicleForm = ({ onSubmit, vehicleBase }: IVehicleForm): JSX.Element => {
   )
 }
 
-VehicleForm.defaultProps = {
+AddVehicleForm.defaultProps = {
   vehicleBase: {
     brand: '',
     color: '#f28b82',
@@ -177,4 +180,4 @@ VehicleForm.defaultProps = {
   },
 }
 
-export default VehicleForm
+export default AddVehicleForm
