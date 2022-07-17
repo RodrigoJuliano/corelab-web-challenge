@@ -12,9 +12,10 @@ import { IVehicle, IVehiclePayload, merge } from '../../types/Vehicle'
 import { IVehicleFilters } from '../../types/VehicleFilters'
 import VehicleList from './VehicleList'
 import VehicleFilterForm from '../../components/VehicleFilterForm'
+import IconButton from '../../components/IconButton'
+import FiltersIcon from '../../assets/filters.png'
 
 const VehiclesPage = (): JSX.Element => {
-  const [search, setSearch] = useState<string>('')
   const [showAddForm, setShowAddForm] = useState<boolean>(false)
   const [editingVehicle, setEditingVehicle] = useState<IVehicle | undefined>(
     undefined
@@ -57,6 +58,10 @@ const VehiclesPage = (): JSX.Element => {
     loadVehicles({ quantityPerPage: 50, page: 1, filters: f })
   }
 
+  const onSubmitSearch = (str: string): void => {
+    loadVehicles({ term: str, quantityPerPage: 50, page: 1, filters })
+  }
+
   const onClickFavorite = (v: IVehicle): void => {
     const cp = v
     cp.is_favorite = !cp.is_favorite
@@ -81,15 +86,13 @@ const VehiclesPage = (): JSX.Element => {
   return (
     <div className={styles.Vehicles}>
       <main className={styles.main}>
-        <Search
-          placeholder="Buscar"
-          value={search}
-          onChange={(ev) => {
-            setSearch(ev.target.value)
-            console.debug('Search changed')
-          }}
-          onClickFilter={() => setShowFilterForm(true)}
-        />
+        <header className={styles.header}>
+          <Search placeholder="Buscar" onSubmit={onSubmitSearch} />
+          <IconButton
+            icon={FiltersIcon}
+            onClick={() => setShowFilterForm(true)}
+          />
+        </header>
 
         <Button text="ADICIONAR" onClick={() => setShowAddForm(true)} />
 

@@ -2,10 +2,9 @@
 @import '../../styles/colors.scss';
 
 .searchContainer {
-  position: relative;
   display: flex;
   align-items: center;
-  margin: auto;
+  width: 100%;
 
   & > img {
     position: absolute;
@@ -29,17 +28,5 @@
       border-color: darken($color-acent, 20%);
       outline: none;
     }
-  }
-  @include tablet {
-  }
-
-  @include laptop {
-    width: 60%;
-  }
-
-  @include desktop {
-  }
-
-  @include desktop-large {
   }
 }

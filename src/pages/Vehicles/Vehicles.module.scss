@@ -16,12 +16,23 @@
     gap: 1rem;
   }
 
+  .header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: auto;
+  }
+
   @include tablet {
   }
 
   @include laptop {
     .cardsContainer {
       grid-template-columns: repeat(2, 300px);
+    }
+
+    .header {
+      width: 60%;
     }
   }
 
