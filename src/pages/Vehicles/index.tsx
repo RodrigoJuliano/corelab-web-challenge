@@ -59,7 +59,7 @@ const VehiclesPage = (): JSX.Element => {
   }
 
   const onSubmitSearch = (str: string): void => {
-    loadVehicles({ term: str, quantityPerPage: 50, page: 1, filters })
+    loadVehicles({ searchString: str, quantityPerPage: 50, page: 1, filters })
   }
 
   const onClickFavorite = (v: IVehicle): void => {
