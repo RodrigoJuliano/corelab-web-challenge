@@ -8,6 +8,11 @@
   overflow-y: scroll;
 }
 
+// Don't render the container if empty (modal closed)
+.externalContainer:empty {
+  display: none;
+}
+
 .internalContainer {
   max-width: 400px;
   position: relative;

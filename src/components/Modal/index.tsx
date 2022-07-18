@@ -1,5 +1,7 @@
-import { useEffect, ReactNode, useRef } from 'react'
+import { useEffect, ReactNode, useRef, useCallback } from 'react'
 import ReactDOM from 'react-dom'
+import useClickListener from '../../hooks/useClickListener'
+import useLockBodyScroll from '../../hooks/useLockBodyScroll'
 import Conditional from '../Conditional'
 import styles from './Modal.module.scss'
 
@@ -29,38 +31,15 @@ const Modal = (props: IModal): JSX.Element => {
     }
   }, [])
 
-  // Register eventlistener to close the modal on clicking outside
-  useEffect(() => {
-    const extContainer = externalContainerRef.current
-
-    const clickHandler = (e: MouseEvent): void => {
-      if (e.target === extContainer) {
-        onClickClose()
-      }
-    }
-    extContainer.addEventListener('click', clickHandler, {
-      passive: true,
-    })
-
-    return () => {
-      extContainer.removeEventListener('click', onClickClose)
-    }
+  const closeHandler = useCallback(() => {
+    onClickClose()
   }, [onClickClose])
 
-  // Hide / show the modal
-  useEffect(() => {
-    if (isOpen) {
-      // Prevent page scrolling
-      document.body.style.overflow = 'hidden'
+  // Register eventlistener to close the modal on clicking outside
+  useClickListener(externalContainerRef, closeHandler, false)
 
-      externalContainerRef.current.style.visibility = 'visible'
-    } else {
-      // Restore scrolling
-      document.body.style.overflow = 'unset'
-
-      externalContainerRef.current.style.visibility = 'hidden'
-    }
-  }, [isOpen])
+  // Prevent page scrolling
+  useLockBodyScroll(isOpen)
 
   // Create the portal to container element
   return (
