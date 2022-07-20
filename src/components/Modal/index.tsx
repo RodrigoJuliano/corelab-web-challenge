@@ -43,7 +43,7 @@ const Modal = (props: IModal): JSX.Element => {
 
   // Create the portal to container element
   return (
-    <Conditional condition={isOpen} fallback={null}>
+    <Conditional condition={isOpen}>
       {ReactDOM.createPortal(
         <div className={styles.internalContainer}>
           <button
