@@ -1,0 +1,39 @@
+@import '../../styles/colors.scss';
+@import '../../styles/break-points.scss';
+
+.button {
+  background-color: $color-acent;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 2rem;
+  font-size: 1.2rem;
+  transition: 0.1s transform;
+
+  &:not(:disabled):hover {
+    cursor: pointer;
+  }
+
+  &:not(:disabled):active {
+    transform: translateY(2px);
+    background-color: darken($color-acent, 15%);
+  }
+
+  svg {
+    vertical-align: middle;
+  }
+
+  @include tablet {
+  }
+
+  @include laptop {
+    margin: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  @include desktop {
+  }
+
+  @include desktop-large {
+  }
+}

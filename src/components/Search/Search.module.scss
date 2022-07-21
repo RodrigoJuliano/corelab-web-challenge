@@ -1,0 +1,32 @@
+@import '../../styles/break-points.scss';
+@import '../../styles/colors.scss';
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  & > img {
+    position: absolute;
+    left: 1rem;
+    pointer-events: none;
+  }
+
+  input {
+    width: 100%;
+    background-color: lighten($color-acent, 20%);
+    border: none;
+    padding: 0.8rem 1.5rem 0.8rem 3.5rem;
+    border-radius: 2rem;
+    border: 1px solid lighten($color-acent, 20%);
+    font-size: 1.2rem;
+
+    &:hover,
+    &:focus,
+    &:active {
+      // color: #0070f3;
+      border-color: darken($color-acent, 20%);
+      outline: none;
+    }
+  }
+}

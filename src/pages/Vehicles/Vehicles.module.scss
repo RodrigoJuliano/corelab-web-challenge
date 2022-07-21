@@ -1,28 +1,70 @@
 @import '../../styles/break-points.scss';
 
+$card_width: 300px;
+
 .Vehicles {
   display: grid;
   padding: 1rem 2rem;
+  gap: 1rem;
+  width: fit-content;
+  margin: auto;
 
-  .main {
+  .cardsContainer {
     display: grid;
     gap: 1rem;
-    width: 100%;
+  }
+
+  .header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: auto;
+  }
+
+  .fallback {
+    padding-top: 20vh;
+    text-align: center;
   }
 
   @include tablet {
-
   }
 
   @include laptop {
+    .header {
+      width: 60%;
+    }
 
+    .cardsContainer {
+      grid-template-columns: repeat(2, $card_width);
+    }
+
+    // Makes the fallback the same size as the contents
+    .fallback {
+      width: calc(2 * #{$card_width} + 1 * 1rem);
+    }
   }
 
   @include desktop {
+    .cardsContainer {
+      grid-template-columns: repeat(3, $card_width);
+    }
 
+    .fallback {
+      width: calc(3 * #{$card_width} + 2 * 1rem);
+    }
   }
 
   @include desktop-large {
+    .cardsContainer {
+      grid-template-columns: repeat(4, $card_width);
+    }
 
+    .fallback {
+      width: calc(4 * #{$card_width} + 3 * 1rem);
+    }
   }
+}
+
+.errorContainer {
+  padding: 2rem 1rem;
 }
