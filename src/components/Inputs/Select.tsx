@@ -1,12 +1,12 @@
 import { ReactNode } from 'react'
 import styles from './Inputs.module.scss'
 
-interface IInput extends React.ComponentPropsWithoutRef<'select'> {
+interface SelectProps extends React.ComponentPropsWithoutRef<'select'> {
   label: string
   children: ReactNode
 }
 
-const Input = (props: IInput): JSX.Element => {
+const Select = (props: SelectProps): JSX.Element => {
   const { label, id, children, ...rest } = props
   return (
     <label className={styles.label} htmlFor={id}>
@@ -19,4 +19,4 @@ const Input = (props: IInput): JSX.Element => {
   )
 }
 
-export default Input
+export default Select

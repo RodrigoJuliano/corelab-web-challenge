@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import { IVehicleFilters } from '../../types/VehicleFilters'
 import Button from '../Button'
-import Select from '../Inputs/Select'
 import Input from '../Inputs/Input'
+import Select from '../Inputs/Select'
 import styles from './VehicleFilterForm.module.scss'
 
-interface IVehicleFilterForm {
+interface VehicleFilterFormProps {
   onSubmit: (f: IVehicleFilters) => void
   filters: IVehicleFilters
 }
 
-const VehicleFilterForm = (props: IVehicleFilterForm): JSX.Element => {
+const VehicleFilterForm = (props: VehicleFilterFormProps): JSX.Element => {
   const { onSubmit, filters = {} } = props
 
   const [brand, setBrand] = useState<string>(filters.brand ?? '')

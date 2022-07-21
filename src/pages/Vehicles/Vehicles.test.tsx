@@ -1,8 +1,7 @@
-import React from 'react'
 import { render, screen } from '@testing-library/react'
-import VehiclesPage from './index'
 import { VehiclesProvider } from '../../contexts/VehiclesContext'
 import api from '../../lib/api'
+import VehiclesPage from './index'
 
 test('renders learn react link', () => {
   render(

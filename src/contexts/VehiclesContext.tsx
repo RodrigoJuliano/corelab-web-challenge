@@ -1,7 +1,7 @@
 import { createContext, useCallback, useMemo, useState } from 'react'
+import { Api } from '../lib/api'
 import { ISearch } from '../types/Search'
 import { IVehicle, IVehiclePayload } from '../types/Vehicle'
-import { Api } from '../lib/api'
 
 export interface IVehiclesContext {
   vehicles: IVehicle[]
@@ -13,14 +13,14 @@ export interface IVehiclesContext {
   deleteVehicle: (vehicle: IVehicle) => Promise<boolean>
 }
 
-interface IVehiclesProvider {
+interface VehiclesProviderProps {
   api: Api
   children: React.ReactNode
 }
 
 export const VehiclesContext = createContext<IVehiclesContext | null>(null)
 
-export const VehiclesProvider = (props: IVehiclesProvider): JSX.Element => {
+export const VehiclesProvider = (props: VehiclesProviderProps): JSX.Element => {
   const { api, children } = props
 
   const [vehicles, setVehicles] = useState<IVehicle[]>([])

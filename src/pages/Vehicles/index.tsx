@@ -1,19 +1,20 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
-import { Button, Search } from '../../components'
-import {
-  VehiclesContext,
-  IVehiclesContext,
-} from '../../contexts/VehiclesContext'
+import FiltersIcon from '../../assets/filters.png'
+import Button from '../../components/Button'
 import Conditional from '../../components/Conditional'
+import IconButton from '../../components/IconButton'
+import Loading from '../../components/Loading'
 import Modal from '../../components/Modal'
+import Search from '../../components/Search'
+import VehicleFilterForm from '../../components/VehicleFilterForm'
 import VehicleForm from '../../components/VehicleForm'
+import {
+  IVehiclesContext,
+  VehiclesContext,
+} from '../../contexts/VehiclesContext'
 import { IVehicle, IVehiclePayload, merge } from '../../types/Vehicle'
 import { IVehicleFilters } from '../../types/VehicleFilters'
 import VehicleList from './VehicleList'
-import VehicleFilterForm from '../../components/VehicleFilterForm'
-import IconButton from '../../components/IconButton'
-import FiltersIcon from '../../assets/filters.png'
-import Loading from '../../components/Loading'
 import styles from './Vehicles.module.scss'
 
 const VehiclesPage = (): JSX.Element => {

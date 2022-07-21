@@ -1,9 +1,9 @@
-interface ILoading {
+interface LoadingProps {
   size: string | number
   color: string
 }
 
-const Loading = (props: ILoading): JSX.Element => {
+const Loading = (props: LoadingProps): JSX.Element => {
   const { size, color } = props
 
   return (

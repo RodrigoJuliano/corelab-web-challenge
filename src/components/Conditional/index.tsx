@@ -1,13 +1,14 @@
 import { ReactNode } from 'react'
 
-interface IConditional {
+interface ConditionalProps {
   children: ReactNode
   fallback?: ReactNode
   condition: boolean
 }
 
 // Render children if condition is true, otherwise render fallback
-const Conditional = (props: IConditional): any => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Conditional = (props: ConditionalProps): any => {
   const { children, fallback = null, condition } = props
 
   return condition ? children : fallback

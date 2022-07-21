@@ -1,14 +1,14 @@
 import { ReactNode } from 'react'
 import styles from './Card.module.scss'
 
-interface ICard {
+interface CardProps {
   title: string
   children: ReactNode
   color: string
   actions: ReactNode
 }
 
-const Card = (props: ICard): JSX.Element => {
+const Card = (props: CardProps): JSX.Element => {
   const { title, color, children, actions } = props
 
   return (

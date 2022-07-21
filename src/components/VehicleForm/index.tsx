@@ -1,16 +1,16 @@
 import { useState } from 'react'
-import Button from '../Button'
-import Select from '../Inputs/Select'
-import Input from '../Inputs/Input'
 import { IVehiclePayload } from '../../types/Vehicle'
+import Button from '../Button'
+import Input from '../Inputs/Input'
+import Select from '../Inputs/Select'
 import styles from './VehicleForm.module.scss'
 
-interface IAddVehicleForm {
+interface VehicleFormProps {
   onSubmit: (v: IVehiclePayload) => Promise<void>
   vehicleBase?: IVehiclePayload
 }
 
-const AddVehicleForm = (props: IAddVehicleForm): JSX.Element => {
+const VehicleForm = (props: VehicleFormProps): JSX.Element => {
   const {
     onSubmit,
     vehicleBase = {
@@ -162,4 +162,4 @@ const AddVehicleForm = (props: IAddVehicleForm): JSX.Element => {
   )
 }
 
-export default AddVehicleForm
+export default VehicleForm

@@ -1,17 +1,17 @@
-import { useEffect, ReactNode, useRef, useCallback } from 'react'
+import { ReactNode, useCallback, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import useClickListener from '../../hooks/useClickListener'
 import useLockBodyScroll from '../../hooks/useLockBodyScroll'
 import Conditional from '../Conditional'
 import styles from './Modal.module.scss'
 
-interface IModal {
+interface ModalProps {
   children: ReactNode
   isOpen: boolean
   onClickClose: () => void
 }
 
-const Modal = (props: IModal): JSX.Element => {
+const Modal = (props: ModalProps): JSX.Element => {
   const { children, isOpen, onClickClose } = props
 
   // Container element for the modal

@@ -1,15 +1,15 @@
-import { Card } from '../../components'
-import CardItem from '../../components/CardItem'
-import Conditional from '../../components/Conditional'
-import { IVehicle } from '../../types/Vehicle'
-import translateColor from '../../utils/translateColor'
-import IconButton from '../../components/IconButton'
+import deleteIcon from '../../assets/delete.svg'
 import editIcon from '../../assets/edit.png'
 import heartIcon from '../../assets/Heart.svg'
-import deleteIcon from '../../assets/delete.svg'
+import Card from '../../components/Card'
+import CardItem from '../../components/CardItem'
+import Conditional from '../../components/Conditional'
+import IconButton from '../../components/IconButton'
+import { IVehicle } from '../../types/Vehicle'
+import translateColor from '../../utils/translateColor'
 import styles from './Vehicles.module.scss'
 
-interface IVehicleList {
+interface VehicleListProps {
   title: string
   vehicles: IVehicle[]
   onClickEdit: (v: IVehicle) => void
@@ -17,7 +17,7 @@ interface IVehicleList {
   onClickFavorite: (v: IVehicle) => void
 }
 
-const VehicleList = (props: IVehicleList): JSX.Element => {
+const VehicleList = (props: VehicleListProps): JSX.Element => {
   const { title, vehicles, onClickEdit, onClickDelete, onClickFavorite } = props
 
   return (

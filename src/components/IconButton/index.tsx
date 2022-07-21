@@ -1,13 +1,13 @@
 import styles from './IconButton.module.scss'
 
-interface IIconButton {
+interface IconButtonProps {
   onClick?: () => void
   icon: string
   size?: number
   alt?: string
 }
 
-const IconButton = (props: IIconButton): JSX.Element => {
+const IconButton = (props: IconButtonProps): JSX.Element => {
   const { icon, size = 30, onClick, alt = '' } = props
 
   return (

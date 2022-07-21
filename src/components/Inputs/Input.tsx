@@ -1,10 +1,10 @@
 import styles from './Inputs.module.scss'
 
-interface IInput extends React.ComponentPropsWithoutRef<'input'> {
+interface InputProps extends React.ComponentPropsWithoutRef<'input'> {
   label: string
 }
 
-const Input = (props: IInput): JSX.Element => {
+const Input = (props: InputProps): JSX.Element => {
   const { label, id, ...rest } = props
   return (
     <label className={styles.label} htmlFor={id}>

@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { VehiclesProvider } from './contexts/VehiclesContext'
-import VehiclesPage from './pages/Vehicles'
 import api from './lib/api'
+import VehiclesPage from './pages/Vehicles'
 import reportWebVitals from './reportWebVitals'
 import './index.module.scss'
 

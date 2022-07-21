@@ -1,14 +1,14 @@
-import styles from './Button.module.scss'
-import Loading from '../Loading'
 import Conditional from '../Conditional'
+import Loading from '../Loading'
+import styles from './Button.module.scss'
 
-interface IButton extends React.ComponentPropsWithoutRef<'button'> {
+interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   text: string
   typeSubmit?: boolean
   loading?: boolean
 }
 
-const Button = (props: IButton): JSX.Element => {
+const Button = (props: ButtonProps): JSX.Element => {
   const { text, typeSubmit = false, loading = false, ...rest } = props
 
   return (
