@@ -2,7 +2,7 @@ import { ISearch } from '../types/Search'
 import { IVehicle, IVehiclePayload } from '../types/Vehicle'
 import { IVehicleFilters } from '../types/VehicleFilters'
 
-class API {
+export class Api {
   API_base = process.env.REACT_APP_API_URL
 
   getVehicles = async (searchParams: ISearch): Promise<Response> => {
@@ -62,4 +62,4 @@ class API {
     })
 }
 
-export default new API()
+export default new Api()

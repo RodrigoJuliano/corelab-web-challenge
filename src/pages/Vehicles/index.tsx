@@ -1,19 +1,21 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
-import { Button, Search } from '../../components'
-import styles from './Vehicles.module.scss'
-import {
-  VehiclesContext,
-  IVehiclesContext,
-} from '../../contexts/VehiclesContext'
+import FiltersIcon from '../../assets/filters.png'
+import Button from '../../components/Button'
 import Conditional from '../../components/Conditional'
+import IconButton from '../../components/IconButton'
+import Loading from '../../components/Loading'
 import Modal from '../../components/Modal'
-import AddVehicleForm from '../../components/AddVehicleForm'
+import Search from '../../components/Search'
+import VehicleFilterForm from '../../components/VehicleFilterForm'
+import VehicleForm from '../../components/VehicleForm'
+import {
+  IVehiclesContext,
+  VehiclesContext,
+} from '../../contexts/VehiclesContext'
 import { IVehicle, IVehiclePayload, merge } from '../../types/Vehicle'
 import { IVehicleFilters } from '../../types/VehicleFilters'
 import VehicleList from './VehicleList'
-import VehicleFilterForm from '../../components/VehicleFilterForm'
-import IconButton from '../../components/IconButton'
-import FiltersIcon from '../../assets/filters.png'
+import styles from './Vehicles.module.scss'
 
 const VehiclesPage = (): JSX.Element => {
   const [showAddForm, setShowAddForm] = useState<boolean>(false)
@@ -22,6 +24,7 @@ const VehiclesPage = (): JSX.Element => {
   )
   const [showFilterForm, setShowFilterForm] = useState<boolean>(false)
   const [filters, setFilters] = useState<IVehicleFilters>({})
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
 
   const {
     vehicles,
@@ -34,21 +37,29 @@ const VehiclesPage = (): JSX.Element => {
   } = useContext(VehiclesContext) as IVehiclesContext
 
   useEffect(() => {
-    loadVehicles({ quantityPerPage: 50, page: 1 })
-  }, [])
+    if (error) {
+      setShowErrorModal(true)
+    }
+  }, [error])
 
-  const onSubmitAddVehicle = (v: IVehiclePayload): void => {
-    addVehicle(v)
-    // TODO: wait confirmation befere closing the form
-    setShowAddForm(false)
+  useEffect(() => {
+    loadVehicles({ quantityPerPage: 50, page: 1 })
+  }, [loadVehicles])
+
+  const onSubmitAddVehicle = async (v: IVehiclePayload): Promise<void> => {
+    const result = await addVehicle(v)
+    if (result) {
+      setShowAddForm(false)
+    }
   }
 
-  const onSubmitEditVehicle = (v: IVehiclePayload): void => {
+  const onSubmitEditVehicle = async (v: IVehiclePayload): Promise<void> => {
     if (editingVehicle !== undefined) {
       const merged = merge(editingVehicle as IVehicle, v)
-      updateVehicle(merged)
-      // TODO: wait confirmation befere closing the form
-      setEditingVehicle(undefined)
+      const result = await updateVehicle(merged)
+      if (result) {
+        setEditingVehicle(undefined)
+      }
     }
   }
 
@@ -84,46 +95,54 @@ const VehiclesPage = (): JSX.Element => {
   }, [vehicles])
 
   return (
-    <div className={styles.Vehicles}>
-      <main className={styles.main}>
-        <header className={styles.header}>
-          <Search placeholder="Buscar" onSubmit={onSubmitSearch} />
-          <IconButton
-            icon={FiltersIcon}
-            onClick={() => setShowFilterForm(true)}
+    <main className={styles.Vehicles}>
+      <header className={styles.header}>
+        <Search placeholder="Buscar" onSubmit={onSubmitSearch} />
+        <IconButton
+          icon={FiltersIcon}
+          onClick={() => setShowFilterForm(true)}
+        />
+      </header>
+
+      <Button text="ADICIONAR" onClick={() => setShowAddForm(true)} />
+
+      <Conditional
+        condition={!loading}
+        fallback={
+          <div className={styles.fallback}>
+            <Loading size="70px" color="#65dcc7" />
+          </div>
+        }
+      >
+        <Conditional
+          condition={error === null}
+          fallback={<div className={styles.fallback}>{error}</div>}
+        >
+          <VehicleList
+            title="Favoritos"
+            vehicles={favorites}
+            onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
+            onClickDelete={deleteVehicle}
+            onClickFavorite={onClickFavorite}
           />
-        </header>
 
-        <Button text="ADICIONAR" onClick={() => setShowAddForm(true)} />
-
-        <Conditional condition={!loading} fallback={<div>Loading...</div>}>
-          <Conditional condition={error === null} fallback={<div>{error}</div>}>
-            <VehicleList
-              title="Favoritos"
-              vehicles={favorites}
-              onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
-              onClickDelete={deleteVehicle}
-              onClickFavorite={onClickFavorite}
-            />
-
-            <VehicleList
-              title="Anúncios"
-              vehicles={nonFavorites}
-              onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
-              onClickDelete={deleteVehicle}
-              onClickFavorite={onClickFavorite}
-            />
-          </Conditional>
+          <VehicleList
+            title="Anúncios"
+            vehicles={nonFavorites}
+            onClickEdit={(v: IVehicle) => setEditingVehicle(v)}
+            onClickDelete={deleteVehicle}
+            onClickFavorite={onClickFavorite}
+          />
         </Conditional>
-      </main>
+      </Conditional>
       <Modal isOpen={showAddForm} onClickClose={() => setShowAddForm(false)}>
-        <AddVehicleForm onSubmit={onSubmitAddVehicle} />
+        <VehicleForm onSubmit={onSubmitAddVehicle} />
       </Modal>
       <Modal
         isOpen={editingVehicle !== undefined}
         onClickClose={() => setEditingVehicle(undefined)}
       >
-        <AddVehicleForm
+        <VehicleForm
           vehicleBase={editingVehicle}
           onSubmit={onSubmitEditVehicle}
         />
@@ -134,7 +153,13 @@ const VehiclesPage = (): JSX.Element => {
       >
         <VehicleFilterForm filters={filters} onSubmit={onSubmitFilters} />
       </Modal>
-    </div>
+      <Modal
+        isOpen={showErrorModal}
+        onClickClose={() => setShowErrorModal(false)}
+      >
+        <div className={styles.errorContainer}>{error}</div>
+      </Modal>
+    </main>
   )
 }
 

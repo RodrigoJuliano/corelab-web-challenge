@@ -1,8 +1,7 @@
 @import '../../styles/colors.scss';
 
-.form {
-  display: flex;
-  flex-direction: column;
+.label {
+  text-indent: 0.8rem;
 
   input,
   select {
@@ -18,13 +17,5 @@
       border-color: darken($color-acent, 20%);
       outline: none;
     }
-  }
-
-  label {
-    text-indent: 0.8rem;
-  }
-
-  button {
-    margin-top: 1rem;
   }
 }

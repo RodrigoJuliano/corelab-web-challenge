@@ -1,25 +1,31 @@
+import Conditional from '../Conditional'
+import Loading from '../Loading'
 import styles from './Button.module.scss'
 
-interface IButton {
-  onClick?: () => void
+interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   text: string
   typeSubmit?: boolean
+  loading?: boolean
 }
 
-const Button = (props: IButton): JSX.Element => {
-  const { text, onClick = null, typeSubmit } = props
+const Button = (props: ButtonProps): JSX.Element => {
+  const { text, typeSubmit = false, loading = false, ...rest } = props
 
   return (
     <button
       className={styles.button}
       type={typeSubmit ? 'submit' : 'button'}
-      onClick={onClick ?? undefined}
+      /* eslint-disable-next-line react/jsx-props-no-spreading */
+      {...rest}
     >
-      {text}
+      <Conditional
+        condition={!loading}
+        fallback={<Loading size="20px" color="black" />}
+      >
+        {text}
+      </Conditional>
     </button>
   )
 }
-
-Button.defaultProps = { onClick: null, typeSubmit: false }
 
 export default Button

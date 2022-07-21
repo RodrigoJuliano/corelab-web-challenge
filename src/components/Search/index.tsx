@@ -2,12 +2,12 @@ import { useState } from 'react'
 import SearchIcon from '../../assets/Search.svg'
 import styles from './Search.module.scss'
 
-interface ISearch {
+interface SearchProps {
   placeholder: string
   onSubmit: (s: string) => void
 }
 
-const Search = (props: ISearch): JSX.Element => {
+const Search = (props: SearchProps): JSX.Element => {
   const [search, setSearch] = useState<string>('')
   const { placeholder, onSubmit } = props
 

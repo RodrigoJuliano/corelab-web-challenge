@@ -1,15 +1,19 @@
-import { useEffect, ReactNode, useRef } from 'react'
+import { ReactNode, useCallback, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
+import useClickListener from '../../hooks/useClickListener'
+import useLockBodyScroll from '../../hooks/useLockBodyScroll'
 import Conditional from '../Conditional'
 import styles from './Modal.module.scss'
 
-interface IModal {
+interface ModalProps {
   children: ReactNode
   isOpen: boolean
   onClickClose: () => void
 }
 
-const Modal = ({ children, isOpen, onClickClose }: IModal): JSX.Element => {
+const Modal = (props: ModalProps): JSX.Element => {
+  const { children, isOpen, onClickClose } = props
+
   // Container element for the modal
   const externalContainerRef = useRef(document.createElement('div'))
 
@@ -27,42 +31,19 @@ const Modal = ({ children, isOpen, onClickClose }: IModal): JSX.Element => {
     }
   }, [])
 
-  // Register eventlistener to close the modal on clicking outside
-  useEffect(() => {
-    const extContainer = externalContainerRef.current
-
-    const clickHandler = (e: MouseEvent): void => {
-      if (e.target === extContainer) {
-        onClickClose()
-      }
-    }
-    extContainer.addEventListener('click', clickHandler, {
-      passive: true,
-    })
-
-    return () => {
-      extContainer.removeEventListener('click', onClickClose)
-    }
+  const closeHandler = useCallback(() => {
+    onClickClose()
   }, [onClickClose])
 
-  // Hide / show the modal
-  useEffect(() => {
-    if (isOpen) {
-      // Prevent page scrolling
-      document.body.style.overflow = 'hidden'
+  // Register eventlistener to close the modal on clicking outside
+  useClickListener(externalContainerRef, closeHandler, false)
 
-      externalContainerRef.current.style.visibility = 'visible'
-    } else {
-      // Restore scrolling
-      document.body.style.overflow = 'unset'
-
-      externalContainerRef.current.style.visibility = 'hidden'
-    }
-  }, [isOpen])
+  // Prevent page scrolling
+  useLockBodyScroll(isOpen)
 
   // Create the portal to container element
   return (
-    <Conditional condition={isOpen} fallback={null}>
+    <Conditional condition={isOpen}>
       {ReactDOM.createPortal(
         <div className={styles.internalContainer}>
           <button

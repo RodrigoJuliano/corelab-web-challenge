@@ -1,18 +1,20 @@
 import styles from './IconButton.module.scss'
 
-interface IIconButton {
-  onClick: () => void
+interface IconButtonProps {
+  onClick?: () => void
   icon: string
   size?: number
   alt?: string
 }
 
-const IconButton = ({ icon, size, onClick, alt }: IIconButton): JSX.Element => (
-  <button type="button" className={styles.button} onClick={onClick}>
-    <img src={icon} width={size} height={size} alt={alt} />
-  </button>
-)
+const IconButton = (props: IconButtonProps): JSX.Element => {
+  const { icon, size = 30, onClick, alt = '' } = props
 
-IconButton.defaultProps = { size: 30, alt: '' }
+  return (
+    <button type="button" className={styles.button} onClick={onClick}>
+      <img src={icon} width={size} height={size} alt={alt} />
+    </button>
+  )
+}
 
 export default IconButton
