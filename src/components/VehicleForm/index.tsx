@@ -3,10 +3,10 @@ import Button from '../Button'
 import Select from '../Inputs/Select'
 import Input from '../Inputs/Input'
 import { IVehiclePayload } from '../../types/Vehicle'
-import styles from './AddVehicleForm.module.scss'
+import styles from './VehicleForm.module.scss'
 
 interface IAddVehicleForm {
-  onSubmit: (v: IVehiclePayload) => void
+  onSubmit: (v: IVehiclePayload) => Promise<void>
   vehicleBase?: IVehiclePayload
 }
 
@@ -35,7 +35,9 @@ const AddVehicleForm = (props: IAddVehicleForm): JSX.Element => {
     vehicleBase.description
   )
 
-  const submitHandler = (ev: React.FormEvent): void => {
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const submitHandler = async (ev: React.FormEvent): Promise<void> => {
     ev.preventDefault()
 
     const vehicle: IVehiclePayload = {
@@ -47,8 +49,9 @@ const AddVehicleForm = (props: IAddVehicleForm): JSX.Element => {
       plate,
       description,
     }
-
-    onSubmit(vehicle)
+    setLoading(true)
+    await onSubmit(vehicle)
+    setLoading(false)
   }
 
   return (
@@ -154,8 +157,7 @@ const AddVehicleForm = (props: IAddVehicleForm): JSX.Element => {
         value={description}
         onChange={(v) => setDescription(v.target.value)}
       />
-
-      <Button text="Salvar" typeSubmit />
+      <Button text="Salvar" typeSubmit loading={loading} disabled={loading} />
     </form>
   )
 }

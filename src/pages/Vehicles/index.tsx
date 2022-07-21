@@ -1,19 +1,20 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { Button, Search } from '../../components'
-import styles from './Vehicles.module.scss'
 import {
   VehiclesContext,
   IVehiclesContext,
 } from '../../contexts/VehiclesContext'
 import Conditional from '../../components/Conditional'
 import Modal from '../../components/Modal'
-import AddVehicleForm from '../../components/AddVehicleForm'
+import VehicleForm from '../../components/VehicleForm'
 import { IVehicle, IVehiclePayload, merge } from '../../types/Vehicle'
 import { IVehicleFilters } from '../../types/VehicleFilters'
 import VehicleList from './VehicleList'
 import VehicleFilterForm from '../../components/VehicleFilterForm'
 import IconButton from '../../components/IconButton'
 import FiltersIcon from '../../assets/filters.png'
+import Loading from '../../components/Loading'
+import styles from './Vehicles.module.scss'
 
 const VehiclesPage = (): JSX.Element => {
   const [showAddForm, setShowAddForm] = useState<boolean>(false)
@@ -22,6 +23,7 @@ const VehiclesPage = (): JSX.Element => {
   )
   const [showFilterForm, setShowFilterForm] = useState<boolean>(false)
   const [filters, setFilters] = useState<IVehicleFilters>({})
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
 
   const {
     vehicles,
@@ -34,21 +36,29 @@ const VehiclesPage = (): JSX.Element => {
   } = useContext(VehiclesContext) as IVehiclesContext
 
   useEffect(() => {
-    loadVehicles({ quantityPerPage: 50, page: 1 })
-  }, [])
+    if (error) {
+      setShowErrorModal(true)
+    }
+  }, [error])
 
-  const onSubmitAddVehicle = (v: IVehiclePayload): void => {
-    addVehicle(v)
-    // TODO: wait confirmation befere closing the form
-    setShowAddForm(false)
+  useEffect(() => {
+    loadVehicles({ quantityPerPage: 50, page: 1 })
+  }, [loadVehicles])
+
+  const onSubmitAddVehicle = async (v: IVehiclePayload): Promise<void> => {
+    const result = await addVehicle(v)
+    if (result) {
+      setShowAddForm(false)
+    }
   }
 
-  const onSubmitEditVehicle = (v: IVehiclePayload): void => {
+  const onSubmitEditVehicle = async (v: IVehiclePayload): Promise<void> => {
     if (editingVehicle !== undefined) {
       const merged = merge(editingVehicle as IVehicle, v)
-      updateVehicle(merged)
-      // TODO: wait confirmation befere closing the form
-      setEditingVehicle(undefined)
+      const result = await updateVehicle(merged)
+      if (result) {
+        setEditingVehicle(undefined)
+      }
     }
   }
 
@@ -97,7 +107,11 @@ const VehiclesPage = (): JSX.Element => {
 
       <Conditional
         condition={!loading}
-        fallback={<div className={styles.fallback}>Loading...</div>}
+        fallback={
+          <div className={styles.fallback}>
+            <Loading size="70px" color="#65dcc7" />
+          </div>
+        }
       >
         <Conditional
           condition={error === null}
@@ -121,13 +135,13 @@ const VehiclesPage = (): JSX.Element => {
         </Conditional>
       </Conditional>
       <Modal isOpen={showAddForm} onClickClose={() => setShowAddForm(false)}>
-        <AddVehicleForm onSubmit={onSubmitAddVehicle} />
+        <VehicleForm onSubmit={onSubmitAddVehicle} />
       </Modal>
       <Modal
         isOpen={editingVehicle !== undefined}
         onClickClose={() => setEditingVehicle(undefined)}
       >
-        <AddVehicleForm
+        <VehicleForm
           vehicleBase={editingVehicle}
           onSubmit={onSubmitEditVehicle}
         />
@@ -137,6 +151,12 @@ const VehiclesPage = (): JSX.Element => {
         onClickClose={() => setShowFilterForm(false)}
       >
         <VehicleFilterForm filters={filters} onSubmit={onSubmitFilters} />
+      </Modal>
+      <Modal
+        isOpen={showErrorModal}
+        onClickClose={() => setShowErrorModal(false)}
+      >
+        <div className={styles.errorContainer}>{error}</div>
       </Modal>
     </main>
   )
