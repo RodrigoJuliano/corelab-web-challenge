@@ -1,11 +1,11 @@
 .externalContainer {
-  position: absolute;
+  position: fixed;
   top: 0;
   height: 100%;
   width: 100%;
   background-color: rgba(black, 0.5);
   display: grid;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 // Don't render the container if empty (modal closed)
